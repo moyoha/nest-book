@@ -1,11 +1,30 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PersonModule } from './person/person.module';
 
 @Module({
-  imports: [PersonModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: 'test',
+      useClass: AppService,
+    },
+    {
+      provide: 'me',
+      useValue: 'me',
+    },
+    {
+      provide: 'me2',
+      useFactory: () => 'me2',
+    },
+    {
+      provide: 'me3',
+      useFactory: (param, param2) => {
+        console.log('useFactory', param2);
+        return `param: ${param}`;
+      },
+      inject: ['me', 'me2'],
+    },
+  ],
 })
 export class AppModule {}
