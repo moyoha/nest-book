@@ -15,7 +15,7 @@ import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 
-@Controller('/api/person')
+@Controller('api/person')
 export class PersonController {
   constructor(private readonly personService: PersonService) {}
 

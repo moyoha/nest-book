@@ -1,5 +1,6 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Controller, Get, Inject, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
+import { LoginGuard } from './login.guard';
 
 @Controller()
 export class AppController {
@@ -10,8 +11,15 @@ export class AppController {
   constructor(@Inject('test') private readonly appService: AppService) {}
 
   @Get()
+  @UseGuards(LoginGuard)
   getHello(): string {
-    // return this.appService.getHello();
-    return this.mmmm;
+    console.log('hello___');
+    return this.appService.getHello();
+    // return this.mmmm;
+  }
+  @Get('test')
+  getTest(): string {
+    console.log('hello___test');
+    return this.appService.getHello();
   }
 }

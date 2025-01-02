@@ -1,8 +1,10 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AaaModule } from './aaa/aaa.module';
 import { BbbModule } from './bbb/bbb.module';
+import { PersonModule } from './person/person.module';
+import { LogMiddleware } from './log.middleware';
 
 @Module({
   controllers: [AppController],
@@ -28,6 +30,10 @@ import { BbbModule } from './bbb/bbb.module';
       inject: ['me', 'me2'],
     },
   ],
-  imports: [AaaModule, BbbModule],
+  imports: [AaaModule, BbbModule, PersonModule],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LogMiddleware).forRoutes('api');
+  }
+}
