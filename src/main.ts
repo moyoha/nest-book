@@ -6,9 +6,9 @@ import { Request, Response, NextFunction } from 'express';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.use((req: Request, res: Response, next: NextFunction) => {
-    console.log('before', req.url);
+    console.log('before main', req.url);
     next();
-    console.log('after', req.url);
+    console.log('after main', req.url);
   });
   app.useStaticAssets('public', { prefix: '/static' });
   await app.listen(process.env.PORT ?? 3000);

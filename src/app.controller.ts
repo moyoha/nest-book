@@ -1,6 +1,17 @@
-import { Controller, Get, Inject, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Inject,
+  Query,
+  UseFilters,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { LoginGuard } from './login.guard';
+import { TimeInterceptor } from './time.interceptor';
+import { ValidatePipe } from './validate.pipe';
+import { TestFilter } from './test.filter';
 
 @Controller()
 export class AppController {
@@ -18,8 +29,21 @@ export class AppController {
     // return this.mmmm;
   }
   @Get('test')
+  @UseInterceptors(TimeInterceptor)
   getTest(): string {
     console.log('hello___test');
     return this.appService.getHello();
+  }
+
+  @Get('ccc')
+  @UseFilters(TestFilter)
+  ccc(@Query('num', ValidatePipe) num: number) {
+    return num + 1;
+  }
+
+  @Get('ddd')
+  @UseFilters(TestFilter)
+  ddd() {
+    throw new Error('123');
   }
 }
