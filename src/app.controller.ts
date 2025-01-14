@@ -6,6 +6,16 @@ import {
   UseFilters,
   UseGuards,
   UseInterceptors,
+  SetMetadata,
+  Headers,
+  Ip,
+  Session,
+  Req,
+  Next,
+  HttpCode,
+  Header,
+  Redirect,
+  Render,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LoginGuard } from './login.guard';
@@ -13,6 +23,7 @@ import { TimeInterceptor } from './time.interceptor';
 import { ValidatePipe } from './validate.pipe';
 import { TestFilter } from './test.filter';
 
+@SetMetadata('roles', ['admin'])
 @Controller()
 export class AppController {
   @Inject('me')
@@ -22,6 +33,7 @@ export class AppController {
   constructor(@Inject('test') private readonly appService: AppService) {}
 
   @Get()
+  @SetMetadata('roles', ['common'])
   @UseGuards(LoginGuard)
   getHello(): string {
     console.log('hello___');
@@ -45,5 +57,45 @@ export class AppController {
   @UseFilters(TestFilter)
   ddd() {
     throw new Error('123');
+  }
+  @Get('eee')
+  eee(
+    @Headers('Accept') accept: string,
+    @Headers() headers: any,
+    @Ip() ip: string,
+    @Session() session: any,
+    @Req() req: any,
+    @Next() next: any,
+  ) {
+    console.log('accept', accept);
+    console.log('headers', headers);
+    console.log('ip', ip);
+    console.log('session', session);
+    console.log('req---', req.url);
+    if (!session.views) {
+      session.views = 0;
+    }
+    session.views++;
+    next();
+    return session.views;
+  }
+
+  @Get('eee')
+  @HttpCode(201)
+  @Header('aa', 'bb')
+  eee2() {
+    return 'eee2';
+  }
+
+  @Get('fff')
+  @Redirect('https://www.baidu.com', 301)
+  fff() {
+    return 'fff';
+  }
+
+  @Get('ggg')
+  @Render('user')
+  ggg() {
+    return { name: 'user', age: 18 };
   }
 }

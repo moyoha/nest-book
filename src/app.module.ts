@@ -5,9 +5,10 @@ import { AaaModule } from './aaa/aaa.module';
 import { BbbModule } from './bbb/bbb.module';
 import { PersonModule } from './person/person.module';
 import { LogMiddleware } from './log.middleware';
+import { HosttestController } from './hosttest.controller';
 
 @Module({
-  controllers: [AppController],
+  controllers: [AppController, HosttestController],
   providers: [
     {
       provide: 'test',
