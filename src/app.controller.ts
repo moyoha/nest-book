@@ -22,6 +22,9 @@ import { LoginGuard } from './login.guard';
 import { TimeInterceptor } from './time.interceptor';
 import { ValidatePipe } from './validate.pipe';
 import { TestFilter } from './test.filter';
+import { Aaa } from './aaa.decorator';
+import { Bbb } from './bbb.decorator';
+import { Ccc } from './ccc.decorator';
 
 @SetMetadata('roles', ['admin'])
 @Controller()
@@ -33,7 +36,7 @@ export class AppController {
   constructor(@Inject('test') private readonly appService: AppService) {}
 
   @Get()
-  @SetMetadata('roles', ['common'])
+  @Aaa('admin2')
   @UseGuards(LoginGuard)
   getHello(): string {
     console.log('hello___');
@@ -97,5 +100,15 @@ export class AppController {
   @Render('user')
   ggg() {
     return { name: 'user', age: 18 };
+  }
+
+  @Bbb('dbb', 'adminbb')
+  hhh() {
+    return 'dbb';
+  }
+
+  @Get('iii')
+  iii(@Ccc() c: string) {
+    return c;
   }
 }
