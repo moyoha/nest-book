@@ -25,6 +25,7 @@ import { TestFilter } from './test.filter';
 import { Aaa } from './aaa.decorator';
 import { Bbb } from './bbb.decorator';
 import { Ccc } from './ccc.decorator';
+import { aaaException } from './aaaException';
 
 @SetMetadata('roles', ['admin'])
 @Controller()
@@ -110,5 +111,9 @@ export class AppController {
   @Get('iii')
   iii(@Ccc() c: string) {
     return c;
+  }
+  @Get('jjj')
+  jjj() {
+    throw new aaaException('aaa', 'bbb');
   }
 }
